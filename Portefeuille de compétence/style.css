@@ -287,3 +287,35 @@
       overflow-x: auto;
     }
   }
+
+  th, td {
+    padding: 1.2rem;
+    text-align: left;
+    border: none;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    position: relative;
+  }
+
+  th {
+    background: linear-gradient(145deg, var(--primary-color), #34495e);
+    color: white;
+    font-weight: 600;
+    text-transform: uppercase;
+    font-size: 0.9rem;
+    letter-spacing: 0.5px;
+    border-right: 1px solid rgba(255, 255, 255, 0.2); /* Added for column separation */
+  }
+
+  td {
+    background-color: white;
+    transition: background-color 0.3s ease;
+    border-right: 1px solid rgba(0, 0, 0, 0.1); /* Added for column separation */
+  }
+
+  tr:last-child td {
+    border-bottom: none; /* Remove bottom border for the last row */
+  }
+
+  th:last-child, td:last-child {
+    border-right: none; /* Remove right border for the last column */
+  }
