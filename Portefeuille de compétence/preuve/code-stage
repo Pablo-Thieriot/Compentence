@@ -1,0 +1,168 @@
+using I2.Loc;
+using TheRed.Object;
+using TMPro;
+using UnityEngine;
+
+namespace TheRed.Manager
+{
+    public class ScoreManager : MonoBehaviour
+    {
+        #region Public Fields
+
+        /// <summary>
+        /// Gets the current score
+        /// </summary>
+        public int Score { get { return scorePoint; } }
+
+        /// <summary>
+        /// Gets the distance travelled
+        /// </summary>
+        public int Distance { get { return (int)distance; } }
+
+        /// <summary>
+        /// Gets the time spent
+        /// </summary>
+        public int Timer { get { return (int)timer; } }
+
+        #endregion
+
+        #region Private Fields
+
+        [SerializeField]
+        private GameManager gameManager = null;
+
+        [SerializeField]
+        private TextMeshProUGUI scoreTMP = null;
+
+        [SerializeField]
+        private TextMeshProUGUI distanceTMP = null;
+
+        [SerializeField]
+        private TextMeshProUGUI timerTMP = null;
+
+        [SerializeField]
+        private LocalizedString scoreLocalizedString;
+
+        [SerializeField]
+        private LocalizedString distanceLocalizedString;
+
+        [SerializeField]
+        private LocalizedString timerLocalizedString;
+
+        [SerializeField]
+        private ObstacleSpawner obstacleSpawner = null;
+
+        private int scorePoint = 0;
+        private float distance = 0.0f;
+        private float timer = 0.0f;
+        private bool isTimerRunning = false;
+
+        [SerializeField]
+        private int itemPointValue = 250;
+
+        #endregion
+
+        #region MonoBehaviour Callbacks
+
+        private void Start()
+        {
+            StartTimer();
+        }
+
+        private void Update()
+        {
+            if (obstacleSpawner == null)
+            {
+                return;
+            }
+
+            distance += obstacleSpawner.ObstacleSpeed * Time.deltaTime;
+            UpdateDistance();
+
+            if (isTimerRunning)
+            {
+                timer += Time.deltaTime;
+                UpdateTimer();
+            }
+        }
+
+        #endregion
+
+        #region Public Methods
+
+        public void AddPoint(int pointValue)
+        {
+            scorePoint += pointValue;
+            UpdateScorePoint();
+        }
+
+        public int GetItemPointValue()
+        {
+            return itemPointValue;
+        }
+
+        public void ActiveDistanceUI(bool _active)
+        {
+            if (distanceTMP != null)
+            {
+                distanceTMP.gameObject.SetActive(_active);
+            }
+        }
+
+        public void ActiveScoreUI(bool _active)
+        {
+            if (scoreTMP != null)
+            {
+                scoreTMP.gameObject.SetActive(_active);
+            }
+        }
+
+        public void StartTimer()
+        {
+            isTimerRunning = true;
+        }
+
+        public void StopTimer()
+        {
+            isTimerRunning = false;
+        }
+
+        public void ResetTimer()
+        {
+            timer = 0.0f;
+            UpdateTimer();
+        }
+
+        #endregion
+
+        #region Private Methods
+
+        private void UpdateScorePoint()
+        {
+            if (scoreTMP != null && scoreLocalizedString != null)
+            {
+                scoreTMP.text = $"{scoreLocalizedString}: {scorePoint}";
+            }
+        }
+
+        private void UpdateDistance()
+        {
+            if (distanceTMP != null && distanceLocalizedString != null)
+            {
+                distanceTMP.text = $"{distanceLocalizedString}: {(int)distance}";
+            }
+        }
+
+        private void UpdateTimer()
+        {
+            if (timerTMP != null && timerLocalizedString != null)
+            {
+                int minutes = Mathf.FloorToInt(timer / 60);
+                int seconds = Mathf.FloorToInt(timer % 60);
+                timerTMP.text = $"{timerLocalizedString}: {minutes:D2}:{seconds:D2}";
+            }
+        }
+
+        #endregion
+    }
+}

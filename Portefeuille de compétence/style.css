@@ -11,14 +11,25 @@
     padding: 0;
     box-sizing: border-box;
   }
+
+  html {
+    scroll-behavior: smooth;
+  }
   
   body {
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
     line-height: 1.6;
     color: var(--text-color);
     background-color: var(--background-color);
+    overflow: auto; /* Assurez-vous que le défilement est activé */
+    scroll-behavior: smooth;
   }
   
+.test{
+  text-decoration: none;
+  color: white;
+}
+
   header {
     background-color: var(--primary-color);
     color: white;
